@@ -111,11 +111,7 @@
   #hero { min-height: min(100vh, 900px); display: flex; align-items: center; text-align: center; overflow: hidden; }
   #hero .wrap { display: flex; flex-direction: column; align-items: center; gap: 2.2rem; }
   .hero-text { max-width: 760px; position: relative; }
-  .switch-word {
-    font-family: var(--script); font-size: clamp(3rem, 8vw, 5.4rem);
-    color: #3a3030; display: inline-block; position: relative; margin-right: .3rem; transform: rotate(-4deg);
-  }
-  .switch-word svg { position: absolute; top: -34px; left: 6px; width: 90px; height: 40px; }
+  .hero-logo { display: block; width: clamp(170px, 24vw, 280px); height: auto; margin: 0 auto .6rem; }
   .hero-text p { margin: 0; font-weight: 500; font-size: clamp(1.4rem, 3.4vw, 2.4rem); line-height: 1.5; }
   .btn {
     display: inline-block; margin-top: .5rem;
@@ -241,7 +237,7 @@
     <li><a class="link" href="#viziune">Viziunea</a></li>
     <li><a class="link" href="#echipa">Echipa</a></li>
   </ul>
-  <a class="btn btn-sm" href="#contact">Let's get in touch</a>
+  <a class="btn btn-sm" href="https://www.youtube.com/watch?v=4IHtFpWl5Gs&amp;list=RD4IHtFpWl5Gs&amp;start_radio=1" target="_blank" rel="noopener">Let's get in touch</a>
 </nav>
 
 <!-- IDENTITATE -->
@@ -259,10 +255,7 @@
       <path d="M40 22 C120 16 220 20 300 24" stroke-width="7"/>
     </svg>
     <div class="hero-text reveal">
-      <span class="switch-word">
-        <svg viewBox="0 0 90 40" fill="none" stroke="#3a3030" stroke-width="5" stroke-linecap="round" aria-hidden="true"><path d="M8 34 L18 8"/><path d="M45 34 V4"/><path d="M82 34 L72 8"/></svg>
-        switch
-      </span>
+      <img class="hero-logo" src="logo.svg" alt="Switch">
       <p>există pentru a ghida, dezvolta și scala potențialul creatorilor de conținut.</p>
     </div>
     <a class="btn reveal" href="#menire">Descopera mai mult</a>
@@ -363,7 +356,7 @@
 
 <footer id="contact">
   <h3>Hai sa facem internetul mai bun.</h3>
-  <a class="btn" href="#contact">Let's get in touch</a>
+  <a class="btn" href="https://www.youtube.com/watch?v=4IHtFpWl5Gs&amp;list=RD4IHtFpWl5Gs&amp;start_radio=1" target="_blank" rel="noopener">Let's get in touch</a>
   <div class="copy"><img src="logo.svg" alt="Switch"><span>Copyright © 2026 <a href="https://sorinarseni.com" target="_blank" rel="noopener">Sorin Arseni Hodoroja</a></span></div>
 </footer>
 
