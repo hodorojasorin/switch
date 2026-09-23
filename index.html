@@ -3,48 +3,407 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Switch</title>
+<title>Switch — creatori de conținut responsabili</title>
+<meta name="description" content="Switch există pentru a ghida, dezvolta și scala potențialul creatorilor de conținut.">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sue+Ellen+Francisco&family=Caveat+Brush&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    color-scheme: light dark;
-    --bg: #0f1115;
-    --fg: #f5f5f7;
-    --accent: #6ee7ff;
+    --paper: #f2f2f2;
+    --grid: rgba(0,0,0,.055);
+    --ink: #111;
+    --blue: #6ec6ea;
+    --blue-soft: #8fd3f0;
+    --yellow: #ffdf8a;
+    --purple: #a67cff;
+    --pin: #cdb6ff;
+    --head: "Sue Ellen Francisco", "Caveat Brush", cursive;
+    --script: "Caveat Brush", cursive;
+    --body: "Quicksand", system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--bg);
-    color: var(--fg);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+    line-height: 1.6;
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 48px 48px;
+    overflow-x: hidden;
   }
-  main {
+
+  /* ---------- nav ---------- */
+  nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: .6rem clamp(1rem, 4vw, 3rem);
+    background: rgba(242,242,242,.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 2px dashed rgba(0,0,0,.25);
+  }
+  .logo { display: flex; align-items: center; }
+  .logo img { height: 52px; width: auto; display: block; }
+  nav ul { list-style: none; display: flex; gap: clamp(.8rem, 2.5vw, 2rem); margin: 0; padding: 0; }
+  nav a.link {
+    font-family: var(--head); font-weight: 400; font-size: 1.6rem;
+    color: var(--ink); text-decoration: none; position: relative;
+  }
+  nav a.link::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 4px;
+    background: var(--blue); transform: scaleX(0); transform-origin: left; transition: transform .25s;
+    border-radius: 4px;
+  }
+  nav a.link:hover::after { transform: scaleX(1); }
+  @media (max-width: 640px) { nav ul { display: none; } }
+
+  section { position: relative; padding: clamp(5rem, 12vw, 9rem) clamp(1.2rem, 6vw, 5rem); }
+  .wrap { max-width: 1100px; margin: 0 auto; position: relative; }
+
+  /* ---------- torn paper ---------- */
+  .torn {
+    --c: var(--blue);
+    position: relative; display: inline-block;
+    padding: clamp(2rem, 4vw, 3.2rem) clamp(2rem, 6vw, 4.5rem);
+    background: var(--c);
+    background-image: radial-gradient(rgba(255,255,255,.35) 1px, transparent 1.4px);
+    background-size: 5px 5px;
     text-align: center;
-    padding: 2rem;
+    filter: drop-shadow(0 6px 0 rgba(0,0,0,.08));
   }
-  h1 {
-    font-size: clamp(2rem, 6vw, 3.5rem);
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.02em;
+  .torn.yellow { --c: var(--yellow); }
+  .torn.soft { --c: var(--blue-soft); }
+  .torn h2, .torn h1 {
+    font-family: var(--head); font-weight: 400; margin: 0; line-height: .95;
+    font-size: clamp(3.4rem, 9vw, 6.8rem);
   }
-  h1 span {
-    color: var(--accent);
+  .torn .sub {
+    font-family: var(--head); font-weight: 400;
+    font-size: clamp(1.9rem, 4vw, 3rem); margin: .4rem 0 0; letter-spacing: .03em;
   }
-  p {
-    margin: 0;
-    opacity: 0.7;
-    font-size: 1.1rem;
+  .pin {
+    position: absolute; top: -14px; right: -14px; width: 46px; height: 46px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #efe5ff, var(--pin) 55%, #b79bf0);
+    box-shadow: 4px 6px 8px rgba(0,0,0,.3);
+  }
+  .scribble { display: block; margin: 1rem auto 0; width: min(340px, 60%); }
+
+  /* ---------- reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(40px) rotate(-1.2deg); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.9,.3,1.2); }
+  .reveal.in { opacity: 1; transform: none; }
+  .wobble { animation: wobble 6s ease-in-out infinite; }
+  @keyframes wobble { 0%,100% { transform: rotate(-1.2deg); } 50% { transform: rotate(1.2deg); } }
+  @keyframes float { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-14px) rotate(6deg); } }
+  .float { animation: float 5s ease-in-out infinite; }
+
+  /* ---------- corner scraps ---------- */
+  .scrap { position: absolute; background: var(--yellow); z-index: 0; pointer-events: none; }
+  .scrap.tl { top: 0; left: 0; width: clamp(120px, 16vw, 280px); height: clamp(180px, 26vw, 340px); }
+  .scrap.br { bottom: 0; right: 0; width: clamp(120px, 16vw, 280px); height: clamp(120px, 20vw, 280px); }
+
+  /* ---------- hero ---------- */
+  #hero { min-height: min(100vh, 900px); display: flex; align-items: center; text-align: center; overflow: hidden; }
+  #hero .wrap { display: flex; flex-direction: column; align-items: center; gap: 2.2rem; }
+  .hero-text { max-width: 760px; position: relative; }
+  .switch-word {
+    font-family: var(--script); font-size: clamp(3rem, 8vw, 5.4rem);
+    color: #3a3030; display: inline-block; position: relative; margin-right: .3rem; transform: rotate(-4deg);
+  }
+  .switch-word svg { position: absolute; top: -34px; left: 6px; width: 90px; height: 40px; }
+  .hero-text p { margin: 0; font-weight: 500; font-size: clamp(1.4rem, 3.4vw, 2.4rem); line-height: 1.5; }
+  .btn {
+    display: inline-block; margin-top: .5rem;
+    font-family: var(--head); font-weight: 400; font-size: 2rem; letter-spacing: .04em;
+    color: var(--ink); background: var(--yellow); text-decoration: none;
+    padding: .5rem 2rem; border: 3px solid var(--ink); border-radius: 6px;
+    box-shadow: 6px 6px 0 var(--ink); transition: transform .15s, box-shadow .15s;
+  }
+  .btn-sm { margin: 0; font-size: 1.4rem; padding: .2rem 1.1rem; box-shadow: 4px 4px 0 var(--ink); }
+  .btn:hover { transform: translate(3px,3px); box-shadow: 3px 3px 0 var(--ink); }
+
+  /* ---------- menire ---------- */
+  #menire .grid { display: flex; justify-content: center; }
+  .menire-text { text-align: center; }
+  .menire-text .torn { margin-bottom: 2.4rem; }
+  .menire-text p { margin: 0 auto; max-width: 30ch; font-weight: 500; font-size: clamp(1.3rem, 2.6vw, 1.9rem); }
+
+  /* ---------- misiune ---------- */
+  #misiune { background: var(--blue-soft); overflow: hidden; }
+  #misiune::before, #misiune::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 60px; background: var(--paper);
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px);
+  }
+  #misiune::before { top: -1px; clip-path: polygon(0 0,100% 0,100% 30%,96% 60%,90% 35%,84% 70%,76% 40%,70% 65%,62% 30%,55% 60%,47% 35%,40% 70%,32% 40%,25% 65%,17% 30%,10% 60%,4% 35%,0 55%); }
+  #misiune::after { bottom: -1px; clip-path: polygon(0 100%,100% 100%,100% 45%,96% 70%,90% 40%,84% 65%,76% 35%,70% 70%,62% 40%,55% 65%,47% 30%,40% 60%,32% 35%,25% 70%,17% 40%,10% 65%,4% 30%,0 60%); }
+  #misiune .wrap { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2.4rem; }
+  #misiune p { max-width: 34ch; margin: 0; font-weight: 500; font-size: clamp(1.3rem, 3vw, 2rem); }
+  .star { position: absolute; width: 70px; }
+  .star.s1 { top: 8%; right: 6%; }
+  .star.s2 { top: 30%; right: 1%; width: 46px; }
+  .dash { position: absolute; left: 0; top: 0; width: 120px; }
+  @media (max-width: 720px) { .dash, .star.s2 { display: none; } }
+
+  /* ---------- dogma ---------- */
+  #dogma .wrap { max-width: 900px; text-align: center; padding: 3rem 1rem; }
+  .quote-mark { position: absolute; width: clamp(60px, 9vw, 110px); }
+  .quote-mark.open { top: -10px; left: 0; }
+  .quote-mark.close { bottom: -10px; right: 0; }
+  blockquote {
+    margin: 0; font-family: var(--head); font-weight: 400;
+    font-size: clamp(2.8rem, 7.4vw, 5.6rem); line-height: 1.05; padding: 3rem 2rem;
+  }
+  blockquote mark { background: linear-gradient(transparent 55%, var(--yellow) 55%); color: inherit; padding: 0 .15em; }
+  .dogma-label {
+    position: absolute; top: -6px; right: 4%; font-family: var(--body); font-size: 1.5rem;
+    padding: 0 0 .6rem .6rem; border-bottom: 5px solid var(--ink); border-right: 5px solid var(--ink);
+    padding-right: 1.4rem; font-weight: 500;
+  }
+  .corner { position: absolute; width: 60px; height: 60px; border: 0 solid var(--ink); }
+  .corner.bl { bottom: 8%; left: 3%; border-left-width: 7px; border-bottom-width: 7px; }
+
+
+  /* ---------- combatem ---------- */
+  #combatem .wrap { display: flex; flex-direction: column; align-items: center; gap: 2rem; text-align: center; }
+  #combatem .torn h2 { font-size: clamp(3.2rem, 8.5vw, 6.4rem); }
+  #combatem .torn h2 em { font-style: normal; text-decoration: underline wavy var(--purple) 5px; text-underline-offset: .12em; }
+  #combatem p { max-width: 34ch; margin: 0; font-weight: 500; font-size: clamp(1.3rem, 3vw, 2rem); }
+
+  /* ---------- echipa ---------- */
+  #echipa .wrap { display: flex; flex-direction: column; align-items: center; gap: 4rem; text-align: center; }
+  .polaroids { position: relative; display: flex; justify-content: center; align-items: flex-start; gap: clamp(2rem, 7vw, 6rem); flex-wrap: wrap; width: 100%; }
+  .polaroid {
+    position: relative; width: min(340px, 82vw); background: #fff; padding: 16px 16px 20px;
+    box-shadow: 0 12px 24px rgba(0,0,0,.18); rotate: var(--r, 0deg); transition: rotate .3s, box-shadow .3s;
+  }
+  .polaroid:hover { rotate: 0deg; box-shadow: 0 18px 32px rgba(0,0,0,.22); }
+  .polaroid .pin { top: -20px; right: auto; left: 50%; margin-left: -23px; width: 40px; height: 40px; }
+  .polaroid img { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; object-position: top; background: #ddd; }
+  .polaroid h3 { font-family: var(--body); font-weight: 700; font-size: 1.7rem; margin: 1rem 0 0; line-height: 1.2; }
+  .polaroid span { font-size: 1.05rem; font-weight: 500; }
+  .swoosh { position: absolute; width: clamp(90px, 14vw, 200px); top: 42%; pointer-events: none; }
+  .swoosh.l { left: 0; }
+  .swoosh.r { right: 0; top: 4%; scale: -1 1; }
+  @media (max-width: 900px) { .swoosh { display: none; } }
+
+  /* ---------- viziune ---------- */
+  #viziune .wrap { display: flex; flex-direction: column; align-items: center; gap: 3rem; text-align: center; }
+  .timeline { position: relative; width: 100%; padding-top: 1.6rem; }
+  .timeline::before {
+    content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 6px; background: var(--ink); transform: translateY(-50%);
+    transform-origin: left; transform: translateY(-50%) scaleX(0); transition: transform 1.4s ease .2s;
+  }
+  .timeline.in::before { transform: translateY(-50%) scaleX(1); }
+  .timeline::after {
+    content: ""; position: absolute; top: 50%; right: -4px; transform: translateY(-50%);
+    border-left: 22px solid var(--ink); border-top: 14px solid transparent; border-bottom: 14px solid transparent;
+  }
+  .dot { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border-radius: 50%; border: 6px solid var(--ink); background: var(--paper); }
+  .timeline { padding: 0; }
+  .timeline p { margin: 0; position: absolute; left: 0; right: 0; text-align: center; max-width: none; font-weight: 500; font-size: clamp(1.3rem, 3vw, 2rem); background: none; padding: 0; }
+  .timeline p.above { bottom: calc(50% + 14px); }
+  .timeline p.below { top: calc(50% + 14px); }
+  .timeline { height: clamp(120px, 16vw, 170px); }
+
+  /* ---------- footer ---------- */
+  footer { text-align: center; padding: 4rem 1.2rem 5rem; background: var(--yellow); position: relative; }
+  footer::before {
+    content: ""; position: absolute; left: 0; right: 0; top: -40px; height: 42px; background: var(--yellow);
+    clip-path: polygon(0 100%,0 60%,5% 30%,11% 65%,18% 25%,26% 60%,33% 20%,41% 55%,48% 25%,56% 65%,63% 30%,71% 60%,79% 20%,86% 55%,93% 30%,100% 60%,100% 100%);
+  }
+  footer h3 { font-family: var(--head); font-size: clamp(2.6rem, 6vw, 4.2rem); margin: 0 0 1rem; line-height: 1; }
+  footer .copy { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .4rem; margin-top: 2.5rem; font-weight: 700; }
+  footer .copy img { height: 40px; width: auto; }
+  footer .copy span { font-weight: 700; font-size: 1rem; }
+  footer .copy a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  footer .copy a:hover { color: var(--purple); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .wobble, .float { animation: none; }
+    html { scroll-behavior: auto; }
   }
 </style>
 </head>
 <body>
-  <main>
-    <h1>switch<span>.</span></h1>
-    <p>Bine ai venit.</p>
-  </main>
+
+<nav>
+  <a href="#hero" class="logo"><img src="logo.svg" alt="Switch"></a>
+  <ul>
+    <li><a class="link" href="#hero">Identitatea</a></li>
+    <li><a class="link" href="#menire">Menirea</a></li>
+    <li><a class="link" href="#misiune">Misiunea</a></li>
+    <li><a class="link" href="#viziune">Viziunea</a></li>
+    <li><a class="link" href="#echipa">Echipa</a></li>
+  </ul>
+  <a class="btn btn-sm" href="#contact">Let's get in touch</a>
+</nav>
+
+<!-- IDENTITATE -->
+<section id="hero">
+  <div class="scrap tl torn-shape"></div>
+  <div class="scrap br torn-shape"></div>
+  <div class="wrap">
+    <div class="torn wobble reveal">
+      <span class="pin"></span>
+      <h1>Identitatea noastra</h1>
+      <p class="sub">cine suntem noi ?</p>
+    </div>
+    <svg class="scribble reveal" viewBox="0 0 340 30" fill="none" stroke="#111" stroke-linecap="round" aria-hidden="true">
+      <path d="M6 10 C90 2 220 4 334 12" stroke-width="9"/>
+      <path d="M40 22 C120 16 220 20 300 24" stroke-width="7"/>
+    </svg>
+    <div class="hero-text reveal">
+      <span class="switch-word">
+        <svg viewBox="0 0 90 40" fill="none" stroke="#3a3030" stroke-width="5" stroke-linecap="round" aria-hidden="true"><path d="M8 34 L18 8"/><path d="M45 34 V4"/><path d="M82 34 L72 8"/></svg>
+        switch
+      </span>
+      <p>există pentru a ghida, dezvolta și scala potențialul creatorilor de conținut.</p>
+    </div>
+    <a class="btn reveal" href="#menire">Descopera mai mult</a>
+  </div>
+</section>
+
+<!-- MENIREA -->
+<section id="menire">
+  <div class="wrap grid">
+    <div class="menire-text">
+      <div class="torn soft wobble reveal">
+        <svg viewBox="0 0 120 50" width="110" fill="none" stroke="#111" stroke-width="6" stroke-linecap="round" style="position:absolute;top:-46px;left:50%;transform:translateX(-50%)" aria-hidden="true"><path d="M20 44 L4 14"/><path d="M60 40 V4"/><path d="M100 44 L116 14"/></svg>
+        <h2>Menirea noastra</h2>
+        <p class="sub">de ce facem asta ?</p>
+      </div>
+      <p class="reveal">Credem că orice creator de conținut are nevoie de o cultură și o etică a internetului.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MISIUNEA -->
+<section id="misiune">
+  <svg class="dash" viewBox="0 0 120 120" fill="none" stroke="#111" stroke-width="3" stroke-dasharray="7 7" style="left:4%;top:12%" aria-hidden="true"><path d="M4 4 C80 4 90 50 60 80 C50 92 90 100 116 100"/></svg>
+  <svg class="star s1 float" viewBox="0 0 70 70" stroke="#111" stroke-width="6" stroke-linecap="round" aria-hidden="true"><path d="M35 4 V66 M6 22 L64 48 M10 50 L60 20"/></svg>
+  <svg class="star s2 float" viewBox="0 0 70 70" stroke="#111" stroke-width="6" stroke-linecap="round" aria-hidden="true"><path d="M35 4 V66 M6 22 L64 48 M10 50 L60 20"/></svg>
+  <div class="wrap">
+    <div class="torn yellow wobble reveal">
+      <h2>Misiunea</h2>
+      <p class="sub">cum realizam zi de zi menirea noastra?</p>
+    </div>
+    <p class="reveal">Formăm creatori de conținut responsabili, le dăm mentorat tehnic și le predăm etica internetului.</p>
+  </div>
+</section>
+
+<!-- DOGMA -->
+<section id="dogma">
+  <div class="wrap reveal">
+    <span class="dogma-label">Dogma</span>
+    <span class="corner bl"></span>
+    <svg class="quote-mark open float" viewBox="0 0 90 60" fill="var(--purple)" aria-hidden="true"><circle cx="24" cy="36" r="20"/><circle cx="66" cy="36" r="20"/><path d="M8 34 C8 14 20 6 34 4 L32 12 C22 16 20 22 22 30 Z M50 34 C50 14 62 6 76 4 L74 12 C64 16 62 22 64 30 Z"/></svg>
+    <blockquote>Creatorii de continut din <mark>Republica Moldova</mark> sunt extrem de cringe</blockquote>
+    <svg class="quote-mark close float" viewBox="0 0 90 60" fill="var(--purple)" aria-hidden="true" style="transform:rotate(180deg)"><circle cx="24" cy="36" r="20"/><circle cx="66" cy="36" r="20"/><path d="M8 34 C8 14 20 6 34 4 L32 12 C22 16 20 22 22 30 Z M50 34 C50 14 62 6 76 4 L74 12 C64 16 62 22 64 30 Z"/></svg>
+  </div>
+</section>
+
+
+<!-- COMBATEM -->
+<section id="combatem">
+  <div class="wrap">
+    <div class="torn yellow wobble reveal">
+      <h2>Noi suntem aici sa <em>combatem</em> asta.</h2>
+    </div>
+    <p class="reveal">Inlocuim cringe-ul cu etica, mentorat tehnic si creatori responsabili.</p>
+  </div>
+</section>
+
+<!-- VIZIUNEA -->
+<section id="viziune">
+  <div class="wrap">
+    <div class="torn wobble reveal">
+      <h2>Viziunea noastra</h2>
+      <p class="sub">ce fel de lume construim?</p>
+    </div>
+    <div class="timeline reveal">
+      <span class="dot"></span>
+      <p class="above">Să menținem etica &amp; cultura internetului</p>
+      <p class="below">constant pentru toată lumea.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ECHIPA -->
+<section id="echipa">
+  <div class="wrap">
+    <div class="torn soft wobble reveal">
+      <h2>Echipa noastra</h2>
+      <p class="sub">cine sta in spatele switch ?</p>
+    </div>
+    <div class="polaroids">
+      <svg class="swoosh l float" viewBox="0 0 200 110" fill="none" stroke="#111" stroke-width="3.5" stroke-dasharray="9 8" aria-hidden="true"><path d="M4 8 C40 20 50 90 100 90 C130 90 160 80 186 66"/><path d="M186 66 l-18 -1 M186 66 l-8 -16" stroke-dasharray="0"/></svg>
+      <svg class="swoosh r float" viewBox="0 0 200 110" fill="none" stroke="#111" stroke-width="3.5" stroke-dasharray="9 8" aria-hidden="true"><path d="M4 8 C40 20 50 90 100 90 C130 90 160 80 186 66"/><path d="M186 66 l-18 -1 M186 66 l-8 -16" stroke-dasharray="0"/></svg>
+      <figure class="polaroid reveal" style="--r:-4deg;margin:0">
+        <span class="pin"></span>
+        <img src="img/nichita.jpg" alt="Nichita Popovici, Co-Founder Switch">
+        <h3>Nichita Popovici</h3>
+        <span>Co-Founder</span>
+      </figure>
+      <figure class="polaroid reveal" style="--r:3deg;margin:0">
+        <span class="pin"></span>
+        <img src="img/sorin.jpg" alt="Sorin Hodoroja, Co-Founder Switch">
+        <h3>Sorin Hodoroja</h3>
+        <span>Co-Founder</span>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <h3>Hai sa facem internetul mai bun.</h3>
+  <a class="btn" href="#contact">Let's get in touch</a>
+  <div class="copy"><img src="logo.svg" alt="Switch"><span>Copyright © 2026 <a href="https://sorinarseni.com" target="_blank" rel="noopener">Sorin Arseni Hodoroja</a></span></div>
+</footer>
+
+<script>
+  // rip the edges of every torn-paper element
+  function jag(n, amp, base) {
+    const pts = [];
+    for (let i = 0; i <= n; i++) pts.push([(i / n) * 100, base + (Math.random() - .5) * amp * 2]);
+    return pts;
+  }
+  function tear(el, big) {
+    const a = big ? 2.2 : 3.2, n = 26;
+    const top = jag(n, a, a), bot = jag(n, a, 100 - a).reverse();
+    const pts = top.concat([[100, 100 - a]], bot, [[0, a]]).map(p => p[0].toFixed(1) + '% ' + p[1].toFixed(1) + '%');
+    el.style.clipPath = 'polygon(' + pts.join(',') + ')';
+  }
+  document.querySelectorAll('.torn').forEach(el => {
+    // clip-path would hide the pin/doodles that overflow, so tear a background layer instead
+    const bg = document.createElement('div');
+    bg.style.cssText = 'position:absolute;inset:0;z-index:-1;background:inherit;background-image:inherit;background-size:5px 5px';
+    tear(bg, false);
+    el.style.background = 'none';
+    el.style.backgroundImage = 'none';
+    el.style.isolation = 'isolate';
+    bg.style.background = getComputedStyle(el).getPropertyValue('--c');
+    bg.style.backgroundImage = 'radial-gradient(rgba(255,255,255,.35) 1px, transparent 1.4px)';
+    bg.style.backgroundSize = '5px 5px';
+    el.prepend(bg);
+  });
+  document.querySelectorAll('.torn-shape').forEach(el => {
+    el.style.clipPath = el.classList.contains('tl')
+      ? 'polygon(0 0,100% 0,88% 12%,80% 8%,72% 22%,60% 24%,52% 38%,40% 42%,30% 58%,18% 62%,8% 80%,0 100%)'
+      : 'polygon(100% 0,100% 100%,0 100%,10% 88%,20% 90%,30% 76%,44% 74%,52% 60%,66% 56%,76% 42%,88% 36%,94% 18%)';
+  });
+
+  // scroll reveal
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: .2 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 </body>
 </html>
